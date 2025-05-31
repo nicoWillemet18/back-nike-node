@@ -1,12 +1,13 @@
 import { Router } from 'express';
 import * as typeController from '../controllers/typeController';
+import { authenticateJWT } from '../../middlewares/jwtMiddleware';
 
 const router = Router();
 
 router.get('/', typeController.getAllTypes);
 router.get('/:id', typeController.getTypeById);
-router.post('/', typeController.createType);
-router.put('/:id', typeController.updateType);
-router.delete('/:id', typeController.deleteType);
+router.post('/', authenticateJWT, typeController.createType);
+router.put('/:id', authenticateJWT, typeController.updateType);
+router.delete('/:id', authenticateJWT, typeController.deleteType);
 
 export default router;

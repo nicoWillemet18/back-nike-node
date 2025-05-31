@@ -8,6 +8,7 @@ import typeRoutes from './routes/typeRoutes';
 import categoriaRoutes from './routes/categoriaRoutes';
 import direccionRoutes from './routes/direccionRoutes';
 import usuariosDireccionRoutes from './routes/usuariosDireccionRoutes';
+import authRoutes from './routes/authRoutes';
 
 dotenv.config();
 
@@ -18,6 +19,8 @@ app.use(express.json());
 app.get('/', (_, res) => {
   res.send('Servidor funcionando');
 });
+
+app.use('/auth', authRoutes);
 
 app.use('/usuarios', usuarioRoutes);
 app.use('/productos', productoRoutes);

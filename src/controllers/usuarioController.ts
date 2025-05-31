@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
 import * as usuarioService from '../services/usuarioService';
 
 export async function getAllUsuarios(req: Request, res: Response) {
@@ -24,15 +25,23 @@ export async function getUsuarioById(req: Request, res: Response) {
   }
 }
 
+
+
 export async function createUsuario(req: Request, res: Response) {
   try {
     const data = req.body;
+    // Hashear la contraseña antes de crear el usuario
+    if (data.password) {
+      const SALT_ROUNDS = 10;
+      data.password = await bcrypt.hash(data.password, SALT_ROUNDS);
+    }
     const usuarioCreado = await usuarioService.createUsuario(data);
     res.status(201).json(usuarioCreado);
   } catch (error) {
     res.status(500).json({ message: 'Error al crear usuario', error });
   }
 }
+
 
 export async function updateUsuario(req: Request, res: Response) {
   try {
