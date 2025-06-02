@@ -1,12 +1,23 @@
 import { Request, Response } from 'express';
 import * as authService from '../services/authService';
+import { PrismaClient, Usuario } from '../../generated/prisma';
 
+import bcrypt from 'bcrypt';
+import * as usuarioService from '../services/usuarioService';
+
+const prisma = new PrismaClient();
 export async function register(req: Request, res: Response) {
   try {
-    const user = await authService.register(req.body);
-    res.status(201).json(user);
-  } catch (error: any) {
-    res.status(400).json({ message: error.message });
+    const data = req.body;
+    // Hashear la contraseña antes de crear el usuario
+    if (data.password) {
+      const SALT_ROUNDS = 10;
+      data.password = await bcrypt.hash(data.password, SALT_ROUNDS);
+    }
+    const usuarioCreado = await usuarioService.createUsuario(data);
+    res.status(201).json(usuarioCreado);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al crear usuario', error });
   }
 }
 

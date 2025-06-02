@@ -5,8 +5,8 @@ import jwt from 'jsonwebtoken';
 const prisma = new PrismaClient();
 
 const JWT_SECRET = process.env.JWT_SECRET ?? 'secret';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
-const SALT_ROUNDS = Number(process.env.BCRYPT_SALT_ROUNDS) || 10;
+const JWT_EXPIRES_IN = '1h';
+const SALT_ROUNDS = 10
 
 
 interface RegisterRequest {
@@ -54,11 +54,12 @@ export async function login({ email, password }: LoginRequest) {
     throw new Error('Contraseña incorrecta');
   }
 
-  const token = await jwt.sign(
-    { id: usuario.id, email: usuario.email },
-    JWT_SECRET,
-    { expiresIn: parseInt(JWT_EXPIRES_IN) * 60 }
-  );
+const token = await jwt.sign(
+  { id: usuario.id, email: usuario.email },
+  JWT_SECRET,
+  { expiresIn: JWT_EXPIRES_IN }
+);
+
   const { password: _, ...userWithoutPass } = usuario;
 
   return { token, usuario: userWithoutPass };

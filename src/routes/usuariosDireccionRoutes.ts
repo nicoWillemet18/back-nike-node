@@ -4,7 +4,7 @@ import { authenticateJWT } from '../../middlewares/jwtMiddleware';
 
 const router = Router();
 
-router.get('/', usuariosDireccionController.getAllUsuariosDireccion);
+router.get('/', authenticateJWT, usuariosDireccionController.getAllUsuariosDireccion);
 router.get('/:usuarioId/:direccionId', authenticateJWT, usuariosDireccionController.getUsuariosDireccionById);
 router.post('/', authenticateJWT, usuariosDireccionController.createUsuariosDireccion);
 router.put('/:usuarioId/:direccionId', authenticateJWT, usuariosDireccionController.updateUsuariosDireccion);
