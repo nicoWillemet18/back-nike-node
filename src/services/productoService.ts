@@ -14,6 +14,28 @@ export async function getAllProductos(pagination?: Pagination): Promise<Producto
   });
 }
 
+export async function getAllActiveProductos(pagination?: Pagination): Promise<Producto[]> {
+  return prisma.producto.findMany(
+    {
+    where: {
+      active: true
+    }, 
+    skip: pagination?.skip,
+    take: pagination?.take,
+  });
+}
+
+export async function getAllDisabledProductos(pagination?: Pagination): Promise<Producto[]> {
+  return prisma.producto.findMany(
+    {
+    where: {
+      active: true
+    }, 
+    skip: pagination?.skip,
+    take: pagination?.take,
+  });
+}
+
 export async function getProductoById(id: number): Promise<Producto | null> {
   return prisma.producto.findUnique({ where: { id } });
 }
@@ -30,7 +52,14 @@ export async function updateProducto(id: number, data: Partial<Omit<Producto, 'i
 }
 
 export async function deleteProducto(id: number): Promise<Producto> {
-  return prisma.producto.delete({ where: { id } });
+  //return prisma.producto.delete({ where: { id } });
+  return prisma.producto.update({
+    where: { id },
+    data: {
+      active: false
+    }
+  });
+
 }
 
 

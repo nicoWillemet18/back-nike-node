@@ -26,6 +26,7 @@ model Usuario {
   email      String             @unique
   password   String
   rol        UsuarioRole
+  active     Boolean
 
   direcciones UsuariosDireccion[] // ← Relación inversa
 
@@ -52,6 +53,7 @@ model Producto {
 
   color       Int
   estado      Boolean
+  active     Boolean
 
   @@map("categoriasproductos")
 }
