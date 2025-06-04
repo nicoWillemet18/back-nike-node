@@ -35,6 +35,7 @@ export async function register({ email, password, name }: RegisterRequest) {
       name,
       rol: 'CLIENT',
       usuario: email.split('@')[0],
+      active: true
     },
   });
 
